@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: 023596217299.dkr.ecr.us-east-1.amazonaws.com/eks-lab-ev3-lab-backend:latest # Colocar uri de tu imagen en ECR
+          image: 191521922111.dkr.ecr.us-east-1.amazonaws.com/ev3-lab-backend:latest # Colocar uri de tu imagen en ECR
           ports:
             - containerPort: 3001
           env:

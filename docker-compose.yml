@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    container_name: tienda-perritos-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_DATABASE: tienda_perritos
+      MYSQL_USER: alumno
+      MYSQL_PASSWORD: alumno123
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  tienda-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: tienda-perritos-backend
+    restart: always
+    environment:
+      # Las variables de entorno para que el backend se conecte a MySQL
+      - DB_HOST=db
+      - DB_USER=alumno
+      - DB_PASSWORD=alumno123
+      - DB_NAME=tienda_perritos
+      - DB_PORT=3306
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tienda-perritos-frontend
+    restart: always
+    ports:
+      - "8080:80"
+    depends_on:
+      - tienda-backend
+
+volumes:
+  db_data:
